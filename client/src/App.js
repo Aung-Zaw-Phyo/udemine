@@ -37,17 +37,17 @@ function App() {
           </div>
           <div hidden={loading ? 'hidden' : ''}>
             <BrowserRouter>
-              <div className='d-flex justify-content-center theme_box_shadow py-3 header'>
+              <div className='d-flex justify-content-center  py-3 header'>
                 <h3 className='p-0 m-0 '><Link className='logo_text' to={'/'}>TUTORIALS</Link></h3>
               </div>
               <Loading.Provider value={{ loading, setLoading }}>
                 <Routes>
-                  <Route path='/' element={<Home courses={courses} />} />
+                  <Route path='/' element={<Home data={{courses, setCourses}} />} />
                   <Route path='/detail' element={<DetailMiddleware><Detail /></DetailMiddleware>} />
                 </Routes>
               </Loading.Provider>
               <div className='d-flex justify-content-center theme_box_shadow py-3 footer'>
-                <h5 className='p-0 m-0 logo_text'>Copyright © 2023 TUTORIALS. Learn every course freely.</h5>
+                <h5 className='p-0 m-0'>Copyright © 2023 TUTORIALS. Learn every course freely.</h5>
               </div>
             </BrowserRouter>  
           </div>          

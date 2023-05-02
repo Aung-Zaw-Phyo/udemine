@@ -17,7 +17,7 @@ const Top_post = ({post, setLink}) => {
     <div className=' mb-3'>
       <Link className='d-flex' to={'/detail'} onClick={changeLink}>
         <img className='me-3' src={post.cover} alt="" />
-        <h6>{post.title}</h6>
+        <h6 className='text-light'>{post.title}</h6>
       </Link>
     </div>
   )

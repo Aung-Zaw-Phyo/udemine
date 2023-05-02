@@ -38,14 +38,14 @@ const Home = (params) => {
     const {courses} = params
     return (
         <div>
-            <div className='hero_section bg-light'>
+            <div className='hero_section'>
                 <div className='container py-5'>
                     <div className='row'>
                         <div className='col-lg-6 d-flex justify-content-center'>
                             <img src={img_1} className='w-100' alt="" />
                         </div>
                         <div className='col-lg-6 d-flex flex-column justify-content-center px-2'>
-                            <h4 className='theme_color'>Learn On TUTORIALS</h4>
+                            <h3 className='theme_color'>Learn From Tutorials</h3>
                             <h5 className='mt-3 lh-lg'>
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis adipisci labore aperiam quas delectus, qui suscipit atque mollitia et voluptas tenetur eligendi necessitatibus aspernatur sunt debitis eveniet quo, aliquam consectetur!
                             </h5>

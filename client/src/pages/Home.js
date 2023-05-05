@@ -37,7 +37,39 @@ const Course = (params) => {
 }
 
 const Home = (params) => {
-    const {categories, courses, setCourses, text, setText, filterCat, setFilterCat} = params.data
+    const {categories, courses, setCourses, text, setText, filterCat, setFilterCat, page, setPage} = params.data
+    const {loading, setLoading} = useContext(Loading)
+    const [innerLoading, setInnerLoading] = useState(false)
+
+
+    useEffect(() => {
+        console.log(page)
+        if(page > 1) {
+            setInnerLoading(true)
+            let url = `http://localhost:5001/course?page=${page}`
+            if(filterCat && filterCat != '') {
+                url = `http://localhost:5001/course?page=${page}&category=${filterCat}`
+            }
+            axios({
+                method: "get",
+                url: url,
+            }).then(response => {
+                if(response.data.status === true){
+                    for (let i = 0; i < response.data.data.length; i++) {
+                        const el = response.data.data[i];
+                        setCourses(pre => [...pre, el])
+                    }
+                    setInnerLoading(false)
+                    console.log(response.data.data)
+                }else {
+                    console.log(response.data.message)
+                }
+            }).catch(error => {
+                console.log(error)
+            });
+        }
+    }, [page])
+
     
     useEffect(() => {
         if(text !== ''){
@@ -59,13 +91,21 @@ const Home = (params) => {
 
     useEffect(() => {
         if(filterCat !== null){
+            setLoading(true)
             setText('')
+            setPage(1)
+            console.log('' == filterCat)
+            let url = `http://localhost:5001/course`
+            if('' !== filterCat){
+                url = `http://localhost:5001/course?category=${filterCat}`
+            }
             axios({
                 method: "get",
-                url: `http://localhost:5001/course?category=${filterCat}`,
+                url: url,
             }).then(response => {
                 if(response.data.status === true){
-                setCourses(response.data.data)
+                    setCourses(response.data.data)
+                    setLoading(false)
                 }else {
                 console.log(response.data.message)
                 }
@@ -74,6 +114,18 @@ const Home = (params) => {
             });
         }
     }, [filterCat])
+
+    useEffect(() => {
+        const handleScroll = (e) => {
+            const scrollHeight = e.target.documentElement.scrollHeight
+            const currentHeight = e.target.documentElement.scrollTop + window.innerHeight
+            if(currentHeight + 1 >= scrollHeight){
+                setPage(pre => pre + 1)
+            }
+        }
+        window.addEventListener('scroll', handleScroll)
+        return window.addEventListener('scroll', handleScroll)
+    }, [])
 
     return (
         <div>
@@ -98,9 +150,9 @@ const Home = (params) => {
                     <div className='me-3'>
                         <input type="search" value={text} onChange={(e) => setText(e.target.value)} placeholder="Search" className='bg-light'/>
                     </div>
-                    <div class="select">
+                    <div className="select">
                         <select onChange={(e) => setFilterCat(e.target.value)}>
-                            <option value="3">All</option>
+                            <option value="">All</option>
                             {
                                 categories ? categories.map((cat, index) => {
                                     return (
@@ -117,11 +169,21 @@ const Home = (params) => {
                     <div className='row'>
                         {
                             courses ? courses.map((item, index) => {
-                                return <Course item={item}/>
+                                return <Course key={index} item={item}/>
                             }) : null
                         }
                         
                     </div>
+                    {
+                        innerLoading ?  
+                        <div class="wave py-5">
+                            <div class="ball"></div>
+                            <div class="ball"></div>
+                            <div class="ball"></div>
+                            <div class="ball"></div>
+                            {/* <div class="ball"></div> */}
+                        </div> : null
+                    }
                 </div>
             </div>
 

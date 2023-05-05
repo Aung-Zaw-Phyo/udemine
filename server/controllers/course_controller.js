@@ -1,7 +1,7 @@
 const axios = require('axios')
 const cheerio = require('cheerio')
-let url = process.env.URL
 const response = require("../utils/response");
+let url = process.env.URL
 
 const index = async (req, res, next) => {
     try {
@@ -9,13 +9,20 @@ const index = async (req, res, next) => {
         let category = req.query.category
         if(page){
             url = `${process.env.URL}page/${page}`
+        }else{
+            url = `${process.env.URL}`
         }
         if(category){
             page ? 
-                url = `${process.env.URL}/category/${category}/page/${page}` : 
-                url = `${process.env.URL}/category/${category}`
+            url = `${process.env.URL}/category/${category}/page/${page}` : 
+            url = `${process.env.URL}/category/${category}`
             
+        }else{
+            page ? 
+            url = `${process.env.URL}/page/${page}` : 
+            url = `${process.env.URL}`
         }
+        console.log(url)
         const result = await axios.get(url)
         const html = result.data
         const $ = cheerio.load(html)

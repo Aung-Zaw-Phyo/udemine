@@ -16,6 +16,7 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [text, setText] = useState('')
   const [filterCat, setFilterCat] = useState(null)
+  const [page, setPage] = useState(1)
   
   useEffect(() => {
     axios({
@@ -68,7 +69,9 @@ function App() {
                       text,
                       setText,
                       filterCat,
-                      setFilterCat
+                      setFilterCat,
+                      page,
+                      setPage
                     }} />} 
                   />
                   <Route path='/detail' element={<DetailMiddleware><Detail /></DetailMiddleware>} />

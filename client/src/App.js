@@ -12,7 +12,26 @@ import { Loading } from './Loading';
 
 function App() {
   const [courses, setCourses] = useState(null)
+  const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
+  const [text, setText] = useState('')
+  const [filterCat, setFilterCat] = useState(null)
+  
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: "http://localhost:5001/course/categories",
+    }).then(response => {
+      if(response.data.status === true){
+        setCategories(response.data.data)
+      }else {
+        console.log(response.data.message)
+      }
+    }).catch(error => {
+      console.log(error)
+    });
+  })
+
   useEffect(() => {
     axios({
       method: "get",
@@ -42,7 +61,16 @@ function App() {
               </div>
               <Loading.Provider value={{ loading, setLoading }}>
                 <Routes>
-                  <Route path='/' element={<Home data={{courses, setCourses}} />} />
+                  <Route path='/' element={<Home data={{
+                      categories, 
+                      courses, 
+                      setCourses,
+                      text,
+                      setText,
+                      filterCat,
+                      setFilterCat
+                    }} />} 
+                  />
                   <Route path='/detail' element={<DetailMiddleware><Detail /></DetailMiddleware>} />
                 </Routes>
               </Loading.Provider>

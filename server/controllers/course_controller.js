@@ -5,9 +5,16 @@ const response = require("../utils/response");
 
 const index = async (req, res, next) => {
     try {
-        if(req.query.page){
-            url = `${process.env.URL}page/${req.query.page}`
-            console.log(url)
+        let page = req.query.page
+        let category = req.query.category
+        if(page){
+            url = `${process.env.URL}page/${page}`
+        }
+        if(category){
+            page ? 
+                url = `${process.env.URL}/category/${category}/page/${page}` : 
+                url = `${process.env.URL}/category/${category}`
+            
         }
         const result = await axios.get(url)
         const html = result.data
@@ -146,10 +153,38 @@ const search = async (req, res, next) => {
             })
         }
         response.success(res, { message: "courses", data: data });
-        
     } catch (error) {
         next(error)
     }
 }
 
-module.exports = {index, detail, search}
+const categories = async (req, res, next) => {
+    try {
+        const result = await axios.get(process.env.URL)
+        const html = result.data
+        const $ = cheerio.load(html)
+        const list = $('.menu-item-has-children > ul a', html)
+        const categories = []
+        let top = ''
+        for (let i = 0; i < list.length; i++) {
+            const el = list[i];
+            if($(el).text().toLowerCase() === top){
+                break;
+            }
+            i === 0 ? top = $(el).text().toLowerCase() : null
+
+            let arr = $(el).attr('href').split('/')
+            let cat = arr[arr.length-2]
+            const category = {
+                text: $(el).text(),
+                category: cat
+            }
+            categories.push(category)
+        }
+        response.success(res, { message: "categories", data: categories });
+    } catch (error) {
+        next(error)
+    }
+}
+
+module.exports = {index, detail, search, categories}

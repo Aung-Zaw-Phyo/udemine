@@ -37,23 +37,43 @@ const Course = (params) => {
 }
 
 const Home = (params) => {
-    const {courses, setCourses} = params.data
-    const [text, setText] = useState('')
+    const {categories, courses, setCourses, text, setText, filterCat, setFilterCat} = params.data
+    
     useEffect(() => {
-        console.log(text)
-        axios({
-            method: "get",
-            url: `http://localhost:5001/course/search?key=${text}`,
-        }).then(response => {
-            if(response.data.status === true){
-              setCourses(response.data.data)
-            }else {
-              console.log(response.data.message)
-            }
-        }).catch(error => {
-            console.log(error)
-        });
+        if(text !== ''){
+            console.log(text)
+            axios({
+                method: "get",
+                url: `http://localhost:5001/course/search?key=${text}`,
+            }).then(response => {
+                if(response.data.status === true){
+                setCourses(response.data.data)
+                }else {
+                console.log(response.data.message)
+                }
+            }).catch(error => {
+                console.log(error)
+            });
+        }
     }, [text])
+
+    useEffect(() => {
+        if(filterCat !== null){
+            setText('')
+            axios({
+                method: "get",
+                url: `http://localhost:5001/course?category=${filterCat}`,
+            }).then(response => {
+                if(response.data.status === true){
+                setCourses(response.data.data)
+                }else {
+                console.log(response.data.message)
+                }
+            }).catch(error => {
+                console.log(error)
+            });
+        }
+    }, [filterCat])
 
     return (
         <div>
@@ -79,10 +99,17 @@ const Home = (params) => {
                         <input type="search" value={text} onChange={(e) => setText(e.target.value)} placeholder="Search" className='bg-light'/>
                     </div>
                     <div class="select">
-                        <select>
-                            <option value="1">Pure CSS Select</option>
-                            <option value="2">No JS</option>
-                            <option value="3">Nice!</option>
+                        <select onChange={(e) => setFilterCat(e.target.value)}>
+                            <option value="3">All</option>
+                            {
+                                categories ? categories.map((cat, index) => {
+                                    return (
+                                        filterCat == cat.category ? 
+                                            <option key={index} value={cat.category} selected>{cat.text}</option> : 
+                                            <option key={index} value={cat.category} >{cat.text}</option>
+                                    )
+                                }) : null
+                            }
                         </select>
                     </div>
                 </div>

@@ -129,8 +129,8 @@ const search = async (req, res, next) => {
         let url = `https://tutsnode.net/?s=${key}`
         if(req.query.page){
             url = `https://tutsnode.net/page/${req.query.page}/?s=${key}`
-            console.log(url)
         }
+        console.log(url)
         const result = await axios.get(url)
         const html = result.data
         const $ = cheerio.load(html)

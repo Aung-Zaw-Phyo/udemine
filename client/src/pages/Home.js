@@ -43,12 +43,14 @@ const Home = (params) => {
 
 
     useEffect(() => {
-        console.log(page)
         if(page > 1) {
             setInnerLoading(true)
             let url = `http://localhost:5001/course?page=${page}`
             if(filterCat && filterCat != '') {
                 url = `http://localhost:5001/course?page=${page}&category=${filterCat}`
+            }
+            if(text !== ''){
+                url = `http://localhost:5001/course/search?key=${text}&page=${page}`
             }
             axios({
                 method: "get",
@@ -70,10 +72,10 @@ const Home = (params) => {
         }
     }, [page])
 
-    
-    useEffect(() => {
+    const search = () => {
         if(text !== ''){
-            console.log(text)
+            setPage(1)
+            setFilterCat(null)
             axios({
                 method: "get",
                 url: `http://localhost:5001/course/search?key=${text}`,
@@ -87,14 +89,14 @@ const Home = (params) => {
                 console.log(error)
             });
         }
-    }, [text])
+    }
+    
 
     useEffect(() => {
         if(filterCat !== null){
             setLoading(true)
             setText('')
             setPage(1)
-            console.log('' == filterCat)
             let url = `http://localhost:5001/course`
             if('' !== filterCat){
                 url = `http://localhost:5001/course?category=${filterCat}`
@@ -148,7 +150,10 @@ const Home = (params) => {
             <div className='p-5'>
                 <div className='d-flex justify-content-end py-3'>
                     <div className='me-3'>
-                        <input type="search" value={text} onChange={(e) => setText(e.target.value)} placeholder="Search" className='bg-light'/>
+                        <div className='input-group'>
+                            <input type="search" onKeyUp={(e) => e.key == 'Enter' ? search() : null} value={text} onChange={(e) => setText(e.target.value)} placeholder="Search" className='bg-light'/>
+                            <button className='search-btn' onClick={search}>Search</button>
+                        </div>
                     </div>
                     <div className="select">
                         <select onChange={(e) => setFilterCat(e.target.value)}>

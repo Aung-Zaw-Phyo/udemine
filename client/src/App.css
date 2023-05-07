@@ -168,6 +168,7 @@ background-image: linear-gradient(315deg, #485461 0%, #28313b 74%);
   background-color: #252A37;
   color: #fff;
   cursor: pointer;
+  transition: all .2s ease;
 }
 
 .card .img, .card img {
@@ -181,6 +182,10 @@ background-image: linear-gradient(315deg, #485461 0%, #28313b 74%);
 }
 .title:hover {
   color: #fff;
+}
+
+.card:hover {
+  transform: translateY(-20px);
 }
 
 .card:hover .title{
@@ -314,4 +319,13 @@ select.decorated option:hover {
   background-color: #fff !important;
 }
 
+select {
+  padding: 7px !important;
+}
 
+@media screen and (max-width: 576px) {
+  .content {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+}

@@ -15,6 +15,7 @@ const Course = (params) => {
     return (
         <div className='col-md-6 col-lg-4 col-xl-3 p-3'>
             
+            <Link to={`/detail`} onClick={setLink}>
             <div className='card border-0 theme_box_shadow'>
                 <div>
                     <img className='w-100' src={item.cover} alt="" />
@@ -24,14 +25,15 @@ const Course = (params) => {
                         <p className='font_sm me-2'>{item.category}</p>
                         <p className='font_sm'>{item.createdAt}</p>
                     </div>
-                    <Link to={`/detail`} onClick={setLink} className='title'>
+                    <div className='title'>
                         <div>{item.title}</div>
-                    </Link>     
+                    </div>
                     <p className='mt-3'>
                         {item.description}
                     </p>
                 </div>
             </div>
+            </Link>     
         </div>
     )
 }
@@ -137,7 +139,7 @@ const Home = (params) => {
                         <div className='col-lg-6 d-flex justify-content-center img'>
                             <img src={img_1} className='w-100' alt="" />
                         </div>
-                        <div className='col-lg-6 d-flex flex-column justify-content-center px-2'>
+                        <div className='col-lg-6 d-flex flex-column justify-content-center px-3'>
                             <h3 className=''>Learn From Tutorials</h3>
                             <h5 className='mt-3 lh-lg'>
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis adipisci labore aperiam quas delectus, qui suscipit atque mollitia et voluptas tenetur eligendi necessitatibus aspernatur sunt debitis eveniet quo, aliquam consectetur!
@@ -147,15 +149,15 @@ const Home = (params) => {
                 </div>
             </div>
 
-            <div className='p-5'>
-                <div className='d-flex justify-content-end py-3'>
-                    <div className='me-3'>
+            <div className='p-5 content'>
+                <div className='d-flex justify-content-end flex-wrap p-2 py-3'>
+                    <div className='mt-3'>
                         <div className='input-group'>
                             <input type="search" onKeyUp={(e) => e.key == 'Enter' ? search() : null} value={text} onChange={(e) => setText(e.target.value)} placeholder="Search" className='bg-light'/>
                             <button className='search-btn' onClick={search}>Search</button>
                         </div>
                     </div>
-                    <div className="select">
+                    <div className="select ms-3 mt-3">
                         <select onChange={(e) => setFilterCat(e.target.value)}>
                             <option value="">All</option>
                             {
@@ -170,8 +172,8 @@ const Home = (params) => {
                         </select>
                     </div>
                 </div>
-                <div className=''>
-                    <div className='row'>
+                <div className='mt-4'>
+                    <div className='row g-2'>
                         {
                             courses ? courses.map((item, index) => {
                                 return <Course key={index} item={item}/>

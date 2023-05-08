@@ -9,8 +9,8 @@ import { Loading } from '../Loading'
 const Top_post = ({post, setLink}) => {
   const {loading, setLoading} = useContext(Loading)
   let changeLink = () => {
-    storeLink(post.detail_link)
-    setLink(post.detail_link)
+    storeLink(post.detail)
+    setLink(post.detail)
     setLoading(true)
   }
   return (
@@ -26,8 +26,8 @@ const Top_post = ({post, setLink}) => {
 const Course = ({item, setLink}) => {
   const {loading, setLoading} = useContext(Loading)
   let changeLink = () => {
-    storeLink(item.detail_link)
-    setLink(item.detail_link)
+    storeLink(item.detail)
+    setLink(item.detail)
     setLoading(true)
   }
   return (
@@ -59,7 +59,7 @@ const Detail = () => {
     if(detailLink){
       axios({
         method: "get",
-        url: `http://localhost:5001/course/detail?link=${detailLink}`,
+        url: `http://localhost:5001/course/detail?detail=${detailLink}`,
       }).then(response => {
         if(response.data.status === true){
           setCourse(response.data.data)
@@ -105,7 +105,7 @@ const Detail = () => {
                           ) : null
                         }
                         <div className='mt-5'>
-                          <h5 className='mb-3'>YOU MIGHT ALSO LIKE</h5>
+                          <h5 className='mb-5'>YOU MIGHT ALSO LIKE</h5>
                           <div className='row'>
                             {
                               course.courses.map((item, index) => {

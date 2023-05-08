@@ -10,7 +10,7 @@ const Course = (params) => {
     const {loading, setLoading} = useContext(Loading)
     const item = params.item
     let setLink = () => {
-        storeLink(item.detail_link)
+        storeLink(item.detail)
     }
     return (
         <div className='col-md-6 col-lg-4 col-xl-3 p-3'>

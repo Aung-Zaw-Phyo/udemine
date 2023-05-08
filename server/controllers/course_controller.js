@@ -22,7 +22,6 @@ const index = async (req, res, next) => {
             url = `${process.env.URL}/page/${page}` : 
             url = `${process.env.URL}`
         }
-        console.log(url)
         const result = await axios.get(url)
         const html = result.data
         const $ = cheerio.load(html)
@@ -42,13 +41,14 @@ const index = async (req, res, next) => {
             const time = $('.entry-meta .published', el).text()
             const description = $('.entry-summary p', el).text()
             const detail_link = $('.entry-title a', el).attr('href')
+            const detail = detail_link.split('/')[3]
             data.push({
                 cover,
                 category: cat_text,
                 title,
                 createdAt: time,
                 description,
-                detail_link
+                detail
             })
         }
         response.success(res, { message: "courses", data: data });
@@ -59,11 +59,12 @@ const index = async (req, res, next) => {
 
 const detail = async (req, res, next) => {
     try {
-        const link = req.query.link
-        if(!link){
+        const detail = req.query.detail
+        if(!detail){
             response.throwError({ status: 400, message: 'Invalid data' });
         }
-        const result = await axios.get(link)
+
+        const result = await axios.get(`https://tutsnode.net/${detail}/`)
         const html = result.data
         const $ = cheerio.load(html)
         const title = $('.entry-title', html).text()
@@ -81,12 +82,13 @@ const detail = async (req, res, next) => {
             const el = list[i];
             const cover = $('.related-post-thumbnail a img', el).attr('src')
             const title = $('.related-post-title a', el).attr('title')
-            const link = $('.related-post-title a', el).attr('href')
+            const detail_link = $('.related-post-title a', el).attr('href')
+            const detail = detail_link.split('/')[3]
             const time = $('.related-post-meta a .published', el).text()
             courses.push({
                 cover,
                 title,
-                detail_link: link,
+                detail,
                 createdAt: time
             })
         }
@@ -97,7 +99,7 @@ const detail = async (req, res, next) => {
             const el = top_posts_list[i];
             top_posts.push({
                 title: $('a', el).attr('title'),
-                detail_link: $('a', el).attr('href'),
+                detail: $('a', el).attr('href').split('/')[3],
                 cover: $('a img', el).attr('src')
             })
         }
@@ -150,13 +152,14 @@ const search = async (req, res, next) => {
             const time = $('.entry-meta .published', el).text()
             const description = $('.entry-summary p', el).text()
             const detail_link = $('.entry-title a', el).attr('href')
+            const detail = detail_link.split('/')[3]
             data.push({
                 cover,
                 category: cat_text,
                 title,
                 createdAt: time,
                 description,
-                detail_link
+                detail
             })
         }
         response.success(res, { message: "courses", data: data });

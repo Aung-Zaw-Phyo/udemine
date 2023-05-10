@@ -68,7 +68,16 @@ const detail = async (req, res, next) => {
         const html = result.data
         const $ = cheerio.load(html)
         const title = $('.entry-title', html).text()
-        const categories = $('.category-list a', html).text()
+        const categories_list = $('.category-list > .cat-links > a', html)
+        let categories = ''
+        for (let i = 0; i < categories_list.length; i++) {
+            const element = categories_list[i];
+            if(i == 0){
+                categories += + $(element).text()
+            }else {
+                categories += ' / ' + $(element).text()
+            }
+        }
         const time = $('.entry-meta .posted-on a .published', html).text()
         const cover = $('.entry-content .wp-block-image img', html).attr('src')
         const  desc = $('.entry-content > p', html).text()
@@ -132,7 +141,6 @@ const search = async (req, res, next) => {
         if(req.query.page){
             url = `https://tutsnode.net/page/${req.query.page}/?s=${key}`
         }
-        console.log(url)
         const result = await axios.get(url)
         const html = result.data
         const $ = cheerio.load(html)

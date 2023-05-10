@@ -1,21 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react'
 import img_1 from './../images/img_1.svg'
-import { Link, Navigate } from 'react-router-dom'
+import { Link, Navigate, useParams } from 'react-router-dom'
 import axios from 'axios'
-import { getLink, storeLink } from '../api/helper'
 import { Loading } from '../Loading'
 
 
 const Top_post = ({post, setLink}) => {
   const {loading, setLoading} = useContext(Loading)
   let changeLink = () => {
-    storeLink(post.detail)
     setLink(post.detail)
     setLoading(true)
   }
   return (
-    <div className=' mb-3'>
-      <Link className='d-flex' to={'/detail'} onClick={changeLink}>
+    <div className='post mb-3 shadow'>
+      <Link className='d-flex' to={`/detail/${post.detail}`} onClick={changeLink}>
         <img className='me-3' src={post.cover} alt="" />
         <h6 className='text-light'>{post.title}</h6>
       </Link>
@@ -26,13 +24,12 @@ const Top_post = ({post, setLink}) => {
 const Course = ({item, setLink}) => {
   const {loading, setLoading} = useContext(Loading)
   let changeLink = () => {
-    storeLink(item.detail)
     setLink(item.detail)
     setLoading(true)
   }
   return (
     <div className='col-md-6 col-lg-4'>
-        <Link to={'/detail'} onClick={changeLink}>
+        <Link to={`/detail/${item.detail}`} onClick={changeLink}>
           <div className='card border-0 theme_box_shadow'>
               <div>
                   <img className='w-100' src={item.cover} alt="" />
@@ -48,28 +45,32 @@ const Course = ({item, setLink}) => {
 }
 
 const Detail = () => {
+  const routeParams = useParams()
   const {loading, setLoading} = useContext(Loading)
   const [course, setCourse] = useState(null)
   const [link, setLink] = useState(null)
+
   useEffect(() => {
     setLoading(true)
   }, [])
+
   useEffect(() => {
-    const detailLink = getLink()
-    if(detailLink){
+    let detail = routeParams.course
+    if(detail){
       axios({
         method: "get",
-        url: `http://localhost:5001/course/detail?detail=${detailLink}`,
+        url: `http://localhost:5001/course/detail?detail=${detail}`,
       }).then(response => {
         if(response.data.status === true){
           setCourse(response.data.data)
           setLoading(false)
-          console.log(response.data.data)
         }else {
           console.log(response.data.message)
+          setLoading(false)
         }
       }).catch(error => {
         console.log(error)
+        setLoading(false)
       });
     }
   }, [link])
@@ -78,10 +79,11 @@ const Detail = () => {
     <div>
           {
             course ? (
-              <div className='p-5'>
-                  <div className='py-5'>
+              <div className='p-5 content'>
+                  <div className='py-5 '>
                     <div className='row mb-3'>
-                      <div className='col-lg-8'>
+
+                      <div className='col-lg-8 '>
                         {
                           course ? (
                             <div>
@@ -106,7 +108,7 @@ const Detail = () => {
                         }
                         <div className='mt-5'>
                           <h5 className='mb-5'>YOU MIGHT ALSO LIKE</h5>
-                          <div className='row'>
+                          <div className='row g-3'>
                             {
                               course.courses.map((item, index) => {
                                 return <Course item={item} setLink={setLink}/>
@@ -116,7 +118,7 @@ const Detail = () => {
                         </div>
                       </div>
                       <div className='col-lg-4'>
-                        <h5 className='mb-3'>Top Posts</h5>
+                        <h4 className='mb-3 top_posts_title'>Top Posts</h4>
                         <div className='top_posts'>
                             {
                               course.top_posts.map((post, index) => {

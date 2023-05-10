@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import img_1 from './../images/img_1.svg'
 import { Link } from 'react-router-dom'
-import { storeLink } from '../api/helper'
 import { Loading } from '../Loading'
 import axios from 'axios'
 
@@ -9,13 +8,11 @@ import axios from 'axios'
 const Course = (params) => {
     const {loading, setLoading} = useContext(Loading)
     const item = params.item
-    let setLink = () => {
-        storeLink(item.detail)
-    }
+    
     return (
         <div className='col-md-6 col-lg-4 col-xl-3 p-3'>
             
-            <Link to={`/detail`} onClick={setLink}>
+            <Link to={`/detail/${item.detail}`}>
             <div className='card border-0 theme_box_shadow'>
                 <div>
                     <img className='w-100' src={item.cover} alt="" />
@@ -134,15 +131,15 @@ const Home = (params) => {
     return (
         <div>
             <div className='hero_section'>
-                <div className='container py-5'>
+                <div className='container py-5 pt-5'>
                     <div className='row'>
                         <div className='col-lg-6 d-flex justify-content-center img'>
                             <img src={img_1} className='w-100' alt="" />
                         </div>
-                        <div className='col-lg-6 d-flex flex-column justify-content-center px-3'>
+                        <div className='col-lg-6 d-flex flex-column justify-content-center p-3'>
                             <h3 className=''>Learn From Tutorials</h3>
                             <h5 className='mt-3 lh-lg'>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis adipisci labore aperiam quas delectus, qui suscipit atque mollitia et voluptas tenetur eligendi necessitatibus aspernatur sunt debitis eveniet quo, aliquam consectetur!
+                                For your career, you can learn everything from Tutorials.
                             </h5>
                         </div>
                     </div>

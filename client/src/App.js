@@ -17,6 +17,7 @@ function App() {
   const [text, setText] = useState('')
   const [filterCat, setFilterCat] = useState(null)
   const [page, setPage] = useState(1)
+  const [errMsg, setErrMsg] = useState(false)
   
   useEffect(() => {
     axios({
@@ -27,9 +28,11 @@ function App() {
         setCategories(response.data.data)
       }else {
         console.log(response.data.message)
+        setErrMsg(true)
       }
     }).catch(error => {
       console.log(error)
+      setErrMsg(true)
     });
   })
 
@@ -43,9 +46,11 @@ function App() {
         setLoading(false)
       }else {
         console.log(response.data.message)
+        setLoading(false)
       }
     }).catch(error => {
       console.log(error)
+      setLoading(false)
     });
   }, [])
 
@@ -61,24 +66,32 @@ function App() {
                 <div className='d-flex justify-content-center  py-3 header'>
                   <h3 className='p-0 m-0 '><Link className='logo_text' to={'/'}>TUTORIALS</Link></h3>
                 </div>
-                <Loading.Provider value={{ loading, setLoading }}>
-                  <Routes>
-                    <Route path='/' element={<Home data={{
-                        categories, 
-                        courses, 
-                        setCourses,
-                        text,
-                        setText,
-                        filterCat,
-                        setFilterCat,
-                        page,
-                        setPage
-                      }} />} 
-                    />
-                    <Route path='/detail/:course' element={<Detail />} />
-                    <Route path="*" element={<p className='py-5 text-center'>There's nothing here: 404!</p>} />
-                  </Routes>
-                </Loading.Provider>
+                {
+                  errMsg ? 
+                    <div className='errMsg'>
+                      <p className='text-danger text-center'>Oops, Something Wrong. Please reload the page!</p>
+                    </div>
+                  : (
+                    <Loading.Provider value={{ loading, setLoading }}>
+                      <Routes>
+                        <Route path='/' element={<Home data={{
+                            categories, 
+                            courses, 
+                            setCourses,
+                            text,
+                            setText,
+                            filterCat,
+                            setFilterCat,
+                            page,
+                            setPage
+                          }} />} 
+                        />
+                        <Route path='/detail/:course' element={<Detail />} />
+                        <Route path="*" element={<p className='py-5 text-center'>There's nothing here: 404!</p>} />
+                      </Routes>
+                    </Loading.Provider>
+                  )
+                }
               </div>
               <div className='d-flex justify-content-center theme_box_shadow py-3 footer'>
                 <h5 className='px-2 m-0 lh-lg'>Copyright © 2023 TUTORIALS. Learn every course freely.</h5>

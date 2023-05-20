@@ -10,11 +10,13 @@ font-family: 'Roboto Slab', serif;
 }
 
 body {
-  font-family: 'Roboto Slab', serif;
+  /* font-family: 'Roboto Slab', serif; */
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   color: #fff;
   background: rgba(0, 0, 0, 0.834);
   background-image: linear-gradient(315deg, #485461 0%, #28313b 74%);
-  font-size: 17px;
+  font-size: 18px;
+  line-height: 1.6rem;
 }
 
 .content-container {
@@ -64,6 +66,10 @@ a{
 
 a:hover {
   color: #333;
+}
+
+.home_card img {
+  height: 260px;
 }
 
 .top_posts_title {
@@ -123,7 +129,7 @@ a:hover {
   align-items: center;
   position: fixed;
   /* background: rgba(0, 0, 0, 0.834); */
-  background: #333;
+  background-image: linear-gradient(315deg, #485461 0%, #28313b 74%);
   z-index: 1;
 }
 
@@ -131,7 +137,8 @@ a:hover {
   width: 64px;
   height: 64px;
   border: 8px solid;
-  border-color: #3d5af1 transparent #3d5af1 transparent;
+  /* border-color: #3d5af1 transparent #3d5af1 transparent; */
+  border-color: #fff transparent #fff transparent;
   border-radius: 50%;
   animation: spin-anim 1.2s linear infinite;
 }
@@ -213,7 +220,7 @@ background-image: linear-gradient(315deg, #485461 0%, #28313b 74%);
 
 .title {
   color: #fff;
-  transition: all .2s ease-in;
+  transition: all .3s ease;
 }
 .title:hover {
   color: #fff;
@@ -228,7 +235,7 @@ background-image: linear-gradient(315deg, #485461 0%, #28313b 74%);
 }
 
 .title > div {
-  font-size: 20px;
+  font-size: 19px;
 }
 
 
@@ -357,6 +364,14 @@ select {
   padding: 7px !important;
 }
 
+.errMsg {
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+}
+
 
 
 @media screen and (max-width: 576px) {
@@ -377,6 +392,11 @@ select {
   }
 
   .footer h5 {
-    font-size: 14px !important;
+    font-size: 15px !important;
+    text-align: center;
+  }
+
+  .home_card img {
+    height: 220px;
   }
 }

@@ -10,10 +10,10 @@ const Course = (params) => {
     const item = params.item
     
     return (
-        <div className='col-md-6 col-lg-4 col-xl-3 p-3'>
+        <div className='col-md-6 col-lg-4 col-xxl-3 p-3'>
             
             <Link to={`/detail/${item.detail}`}>
-            <div className='card border-0 theme_box_shadow'>
+            <div className='card border-0 theme_box_shadow home_card'>
                 <div>
                     <img className='w-100' src={item.cover} alt="" />
                 </div>
@@ -26,7 +26,7 @@ const Course = (params) => {
                         <div>{item.title}</div>
                     </div>
                     <p className='mt-3'>
-                        {item.description}
+                        {item.description.substr(1,200)}
                     </p>
                 </div>
             </div>
